@@ -182,15 +182,25 @@ nav {
 #particle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
 
 .hero-bold { position: relative; z-index: 1; max-width: 900px; padding: 0 20px; }
-.hero-greet { font-family: var(--mono); color: var(--text-dim); font-size: 15px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px; opacity: 0; }
+.hero-greet { font-family: var(--mono); color: var(--text-dim); font-size: 14px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; opacity: 0; }
+.hero-lead {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 30px);
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  opacity: 0;
+}
 .hero-mega {
   font-family: var(--display);
-  font-size: clamp(30px, 6.5vw, 78px);
-  line-height: 1.1;
+  font-size: clamp(38px, 8vw, 96px);
+  line-height: 1.08;
   font-weight: 700;
-  letter-spacing: -2px;
-  margin-bottom: 22px;
+  letter-spacing: -1px;
+  margin-bottom: 28px;
   white-space: nowrap;
+  min-height: 1.08em;
   color: #f5f6fa;
   transform: perspective(600px) rotateX(6deg);
   transform-style: preserve-3d;

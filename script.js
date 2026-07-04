@@ -252,11 +252,13 @@
   let charIdx = 0;
   let deleting = false;
 
+  const baseShadow = "0 1px 0 #e4e4ec, 0 2px 0 #d4d4dd, 0 3px 0 #c4c4cd, 0 4px 0 #b4b4bd, 0 5px 0 #a4a4ad, 0 6px 8px rgba(0,0,0,0.5), 0 10px 24px rgba(0,0,0,0.4)";
+
   function tick(){
     const role = roles[roleIdx];
     const text = role.text;
     el.style.color = role.color;
-    el.style.textShadow = `0 0 16px ${role.color}55`;
+    el.style.textShadow = `${baseShadow}, 0 0 30px ${role.color}66`;
     if (!deleting) {
       charIdx++;
       el.textContent = text.slice(0, charIdx);
@@ -288,9 +290,11 @@
   if (typeof gsap === 'undefined') return;
 
   gsap.set('.hero-greet', { y: 20 });
-  gsap.set('.hero-sub', { y: 24 });
+  gsap.set('.hero-lead', { y: 20 });
+  gsap.set('.hero-cta', { y: 20 });
 
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
   tl.to('.hero-greet', { opacity: 1, y: 0, duration: 0.7 }, 0.1)
-    .to('.hero-sub',   { opacity: 1, y: 0, duration: 0.8 }, 0.4);
+    .to('.hero-lead',  { opacity: 1, y: 0, duration: 0.7 }, 0.35)
+    .to('.hero-cta',   { opacity: 1, y: 0, duration: 0.7 }, 0.9);
 })();
