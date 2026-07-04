@@ -198,6 +198,7 @@
 
   let targetRotX = 0, targetRotY = 0;
   let mouseX = 0, mouseY = 0;
+  let moveBoost = 0;
 
   hero.addEventListener('mousemove', e => {
     const rect = hero.getBoundingClientRect();
@@ -205,6 +206,7 @@
     mouseY = ((e.clientY - rect.top) / rect.height) - 0.5;
     targetRotY = mouseX * 0.08;
     targetRotX = mouseY * 0.05;
+    moveBoost = 1;
   });
   hero.addEventListener('mouseleave', () => { targetRotX = 0; targetRotY = 0; });
 
@@ -221,10 +223,12 @@
     const t = clock.getElapsedTime();
     material.uniforms.uTime.value = t;
 
-    points.rotation.y += (targetRotY - points.rotation.y) * 0.02 + 0.0002;
-    points.rotation.x += (targetRotX - points.rotation.x) * 0.02;
+    const speed = 1 + moveBoost * 2.5;
+    points.rotation.y += (targetRotY - points.rotation.y) * 0.02 + 0.0012 * speed;
+    points.rotation.x += (targetRotX - points.rotation.x) * 0.02 + Math.sin(t * 0.08) * 0.00015 * speed;
     points.rotation.z = Math.sin(t * 0.03) * 0.02;
     lines.rotation.copy(points.rotation);
+    moveBoost *= 0.97;
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);

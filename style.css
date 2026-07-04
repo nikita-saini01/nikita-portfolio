@@ -8,12 +8,12 @@
   --warm: #d9b98c;
   --silver: linear-gradient(135deg, #ffffff, #9a9aa6 50%, #ffffff);
   --mono: 'JetBrains Mono', 'Courier New', monospace;
-  --display: 'Space Grotesk', 'Bricolage Grotesque', sans-serif;
+  --display: 'Unbounded', 'Space Grotesk', sans-serif;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 html { scroll-behavior: smooth; }
 
@@ -185,10 +185,10 @@ nav {
 .hero-greet { font-family: var(--mono); color: var(--text-dim); font-size: 15px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 18px; opacity: 0; }
 .hero-mega {
   font-family: var(--display);
-  font-size: clamp(24px, 5vw, 60px);
-  line-height: 1.15;
+  font-size: clamp(30px, 6.5vw, 78px);
+  line-height: 1.1;
   font-weight: 700;
-  letter-spacing: -1px;
+  letter-spacing: -2px;
   margin-bottom: 22px;
   white-space: nowrap;
   color: #f5f6fa;
