@@ -13,7 +13,7 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Bungee&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 html { scroll-behavior: smooth; }
 
@@ -182,14 +182,14 @@ nav {
 #particle-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
 
 .hero-bold { position: relative; z-index: 1; max-width: 900px; padding: 0 20px; }
-.hero-greet { font-family: var(--mono); color: var(--text-dim); font-size: 14px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; opacity: 0; }
+.hero-greet { font-family: var(--mono); color: var(--text-dim); font-size: clamp(15px, 1.6vw, 18px); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; opacity: 0; }
 .hero-lead {
   font-family: 'Instrument Serif', serif;
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(20px, 2.6vw, 30px);
+  font-size: clamp(26px, 3.6vw, 40px);
   color: var(--text-dim);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   opacity: 0;
 }
 .hero-mega {
@@ -220,6 +220,13 @@ nav {
   text-shadow: 0 0 4px rgba(255,255,255,0.5), 0 0 10px rgba(140,180,255,0.3);
   animation: cursorBlink 0.9s steps(1) infinite;
   font-weight: 400;
+}
+#typewriter {
+  font-family: 'Bungee', var(--display);
+  letter-spacing: 1px;
+  font-size: 0.78em;
+  display: inline-block;
+  vertical-align: middle;
 }
 @keyframes cursorBlink { 0%,49%{ opacity: 1; } 50%,100%{ opacity: 0; } }
 
