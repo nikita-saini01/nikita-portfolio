@@ -7,6 +7,11 @@
   const ring = document.getElementById('cursorRing');
   if (!dot || !ring) return;
 
+  // Only hide the native cursor once our custom cursor has actually
+  // initialized. If this script fails to load/run, the real cursor
+  // stays visible instead of vanishing (see .custom-cursor-active in CSS).
+  document.documentElement.classList.add('custom-cursor-active');
+
   let mouseX = 0, mouseY = 0;
   let ringX = 0, ringY = 0;
   let active = false;
@@ -65,6 +70,24 @@
       document.body.style.overflow = '';
     });
   });
+
+  // Safety net: if the user navigates with the browser back/forward
+  // button while the mobile menu is open, force it closed and restore
+  // scrolling instead of leaving <body> stuck with overflow: hidden.
+  window.addEventListener('popstate', () => {
+    links.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  });
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      links.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+  });
 })();
 
 // ==============================
@@ -99,6 +122,8 @@
 
 // ==============================
 // Three.js — sparkling 3D particle field
+// Rotation now fully follows the cursor on X, Y and Z axes
+// (no fixed one-directional auto-drift)
 // ==============================
 (function(){
   const canvas = document.getElementById('particle-canvas');
@@ -196,7 +221,8 @@
   const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
   scene.add(lines);
 
-  let targetRotX = 0, targetRotY = 0;
+  // Target rotation on ALL THREE axes, driven purely by cursor position.
+  let targetRotX = 0, targetRotY = 0, targetRotZ = 0;
   let mouseX = 0, mouseY = 0;
   let moveBoost = 0;
 
@@ -204,11 +230,19 @@
     const rect = hero.getBoundingClientRect();
     mouseX = ((e.clientX - rect.left) / rect.width) - 0.5;
     mouseY = ((e.clientY - rect.top) / rect.height) - 0.5;
-    targetRotY = mouseX * 0.08;
-    targetRotX = mouseY * 0.05;
+
+    // Y axis: left/right cursor movement
+    targetRotY = mouseX * 0.7;
+    // X axis: up/down cursor movement
+    targetRotX = mouseY * 0.5;
+    // Z axis: diagonal cursor movement (tilt), so corners rotate the field too
+    targetRotZ = (mouseX * mouseY) * 0.6;
+
     moveBoost = 1;
   });
-  hero.addEventListener('mouseleave', () => { targetRotX = 0; targetRotY = 0; });
+  hero.addEventListener('mouseleave', () => {
+    targetRotX = 0; targetRotY = 0; targetRotZ = 0;
+  });
 
   function onResize(){
     w = hero.offsetWidth; h = hero.offsetHeight;
@@ -219,14 +253,18 @@
   window.addEventListener('resize', onResize);
 
   const clock = new THREE.Clock();
+  // Small, symmetric auto-drift so the field keeps breathing a little even
+  // with no cursor input, on top of the cursor-driven rotation above.
+  const idleAmount = 0.0009;
   function animate(){
     const t = clock.getElapsedTime();
     material.uniforms.uTime.value = t;
 
-    const speed = 1 + moveBoost * 2.5;
-    points.rotation.y += (targetRotY - points.rotation.y) * 0.02 + 0.0012 * speed;
-    points.rotation.x += (targetRotX - points.rotation.x) * 0.02 + Math.sin(t * 0.08) * 0.00015 * speed;
-    points.rotation.z = Math.sin(t * 0.03) * 0.02;
+    // Ease current rotation toward the cursor-driven target on every axis.
+    points.rotation.y += (targetRotY - points.rotation.y) * 0.045 + Math.sin(t * 0.15) * idleAmount;
+    points.rotation.x += (targetRotX - points.rotation.x) * 0.045 + Math.cos(t * 0.12) * idleAmount;
+    points.rotation.z += (targetRotZ - points.rotation.z) * 0.045 + Math.sin(t * 0.09) * idleAmount * 0.6;
+
     lines.rotation.copy(points.rotation);
     moveBoost *= 0.97;
 
@@ -237,29 +275,28 @@
 })();
 
 // ==============================
-// Typewriter loop — rotating roles with color cycling
+// Typewriter loop — rotating roles, single yellow color (no flicker/cycling)
 // ==============================
 (function(){
   const el = document.getElementById('typewriter');
   if (!el) return;
 
+  const YELLOW = '#f2c94c';
+
   const roles = [
-    { text: "AI/ML Engineer", color: "#d9b98c", font: "'Cinzel Decorative', var(--display)" },
-    { text: "Full-Stack Developer", color: "#9ec3d9", font: "'Fontdiner Swanky', var(--display)" },
-    { text: "Problem Solver", color: "#c9a3d9", font: "'Cinzel Decorative', var(--display)" }
+    "AI/ML Engineer",
+    "Full-Stack Developer",
+    "Problem Solver"
   ];
   let roleIdx = 0;
   let charIdx = 0;
   let deleting = false;
 
-  const baseShadow = "0 1px 0 #e4e4ec, 0 2px 0 #d4d4dd, 0 3px 0 #c4c4cd, 0 4px 0 #b4b4bd, 0 5px 0 #a4a4ad, 0 6px 8px rgba(0,0,0,0.5), 0 10px 24px rgba(0,0,0,0.4)";
+  el.style.color = YELLOW;
+  el.style.textShadow = `0 0 20px ${YELLOW}77`;
 
   function tick(){
-    const role = roles[roleIdx];
-    const text = role.text;
-    el.style.color = role.color;
-    el.style.fontFamily = role.font;
-    el.style.textShadow = `${baseShadow}, 0 0 30px ${role.color}66`;
+    const text = roles[roleIdx];
     if (!deleting) {
       charIdx++;
       el.textContent = text.slice(0, charIdx);
