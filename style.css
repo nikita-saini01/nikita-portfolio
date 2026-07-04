@@ -13,9 +13,25 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800;900&family=Cinzel+Decorative:wght@400;700;900&family=Jim+Nightshade&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
 html { scroll-behavior: smooth; }
+
+/* ---- Self-hosted fonts (no external network dependency) ---- */
+@font-face { font-family: 'Jim Nightshade'; src: url('fonts/jim-nightshade-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Fontdiner Swanky'; src: url('fonts/fontdiner-swanky-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cinzel Decorative'; src: url('fonts/cinzel-decorative-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Cinzel Decorative'; src: url('fonts/cinzel-decorative-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Unbounded'; src: url('fonts/unbounded-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Unbounded'; src: url('fonts/unbounded-latin-700-normal.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Unbounded'; src: url('fonts/unbounded-latin-900-normal.woff2') format('woff2'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url('fonts/instrument-serif-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Instrument Serif'; src: url('fonts/instrument-serif-latin-400-italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('fonts/outfit-latin-300-normal.woff2') format('woff2'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('fonts/outfit-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('fonts/outfit-latin-500-normal.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('fonts/outfit-latin-600-normal.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('fonts/jetbrains-mono-latin-400-normal.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('fonts/jetbrains-mono-latin-500-normal.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'JetBrains Mono'; src: url('fonts/jetbrains-mono-latin-600-normal.woff2') format('woff2'); font-weight: 600; font-style: normal; font-display: swap; }
 
 /* ---- Custom cursor (desktop only) ---- */
 @media (min-width: 761px) {
@@ -298,10 +314,9 @@ nav {
   font-weight: 400;
 }
 #typewriter {
-  font-family: 'Cinzel Decorative', var(--display);
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 0.7em;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  font-size: 0.68em;
   display: inline-block;
   vertical-align: middle;
 }

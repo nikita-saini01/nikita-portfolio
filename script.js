@@ -244,9 +244,9 @@
   if (!el) return;
 
   const roles = [
-    { text: "AI/ML Engineer", color: "#d9b98c" },
-    { text: "Full-Stack Developer", color: "#9ec3d9" },
-    { text: "Problem Solver", color: "#c9a3d9" }
+    { text: "AI/ML Engineer", color: "#d9b98c", font: "'Cinzel Decorative', var(--display)" },
+    { text: "Full-Stack Developer", color: "#9ec3d9", font: "'Fontdiner Swanky', var(--display)" },
+    { text: "Problem Solver", color: "#c9a3d9", font: "'Cinzel Decorative', var(--display)" }
   ];
   let roleIdx = 0;
   let charIdx = 0;
@@ -258,6 +258,7 @@
     const role = roles[roleIdx];
     const text = role.text;
     el.style.color = role.color;
+    el.style.fontFamily = role.font;
     el.style.textShadow = `${baseShadow}, 0 0 30px ${role.color}66`;
     if (!deleting) {
       charIdx++;
