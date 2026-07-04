@@ -1,4 +1,48 @@
 // ==============================
+// Custom cursor (desktop only)
+// ==============================
+(function(){
+  if (window.matchMedia('(max-width: 760px)').matches) return;
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (!dot || !ring) return;
+
+  let mouseX = 0, mouseY = 0;
+  let ringX = 0, ringY = 0;
+  let active = false;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    dot.style.left = mouseX + 'px';
+    dot.style.top = mouseY + 'px';
+    if (!active) {
+      dot.classList.add('active');
+      ring.classList.add('active');
+      active = true;
+    }
+  });
+  document.addEventListener('mouseleave', () => {
+    dot.classList.remove('active');
+    ring.classList.remove('active');
+    active = false;
+  });
+
+  function raf(){
+    ringX += (mouseX - ringX) * 0.18;
+    ringY += (mouseY - ringY) * 0.18;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(raf);
+  }
+  raf();
+
+  document.querySelectorAll('a, button, .scroll-hint').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+})();
+
+// ==============================
 // Mobile nav toggle
 // ==============================
 (function(){
@@ -20,6 +64,36 @@
       toggle.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     });
+  });
+})();
+
+// ==============================
+// Magnetic buttons + cursor spotlight
+// ==============================
+(function(){
+  if (window.matchMedia('(max-width: 760px)').matches) return;
+
+  // Cursor spotlight glow
+  const glow = document.createElement('div');
+  glow.className = 'cursor-glow';
+  document.body.appendChild(glow);
+  let glowActive = false;
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+    if (!glowActive) { glow.classList.add('active'); glowActive = true; }
+  });
+  document.addEventListener('mouseleave', () => { glow.classList.remove('active'); glowActive = false; });
+
+  // Magnetic pull on buttons
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.18}px, ${y * 0.35}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = ''; });
   });
 })();
 
@@ -95,6 +169,33 @@
   const points = new THREE.Points(geometry, material);
   scene.add(points);
 
+  // ---- Neural-network connecting lines between nearby particles ----
+  const linePositions = [];
+  const maxDist = 2.1;
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    for (let j = i + 1; j < PARTICLE_COUNT; j++) {
+      const dx = positions[i*3] - positions[j*3];
+      const dy = positions[i*3+1] - positions[j*3+1];
+      const dz = positions[i*3+2] - positions[j*3+2];
+      const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+      if (dist < maxDist) {
+        linePositions.push(positions[i*3], positions[i*3+1], positions[i*3+2]);
+        linePositions.push(positions[j*3], positions[j*3+1], positions[j*3+2]);
+      }
+    }
+  }
+  const lineGeometry = new THREE.BufferGeometry();
+  lineGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(linePositions), 3));
+  const lineMaterial = new THREE.LineBasicMaterial({
+    color: 0x9fb4ff,
+    transparent: true,
+    opacity: 0.08,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+  const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+  scene.add(lines);
+
   let targetRotX = 0, targetRotY = 0;
   let mouseX = 0, mouseY = 0;
 
@@ -123,6 +224,7 @@
     points.rotation.y += (targetRotY - points.rotation.y) * 0.02 + 0.0002;
     points.rotation.x += (targetRotX - points.rotation.x) * 0.02;
     points.rotation.z = Math.sin(t * 0.03) * 0.02;
+    lines.rotation.copy(points.rotation);
 
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
@@ -131,19 +233,26 @@
 })();
 
 // ==============================
-// Typewriter loop — rotating roles
+// Typewriter loop — rotating roles with color cycling
 // ==============================
 (function(){
   const el = document.getElementById('typewriter');
   if (!el) return;
 
-  const roles = ["AI/ML Engineer", "Full-Stack Developer", "Problem Solver"];
+  const roles = [
+    { text: "AI/ML Engineer", color: "#d9b98c" },
+    { text: "Full-Stack Developer", color: "#9ec3d9" },
+    { text: "Problem Solver", color: "#c9a3d9" }
+  ];
   let roleIdx = 0;
   let charIdx = 0;
   let deleting = false;
 
   function tick(){
-    const text = roles[roleIdx];
+    const role = roles[roleIdx];
+    const text = role.text;
+    el.style.color = role.color;
+    el.style.textShadow = `0 0 16px ${role.color}55`;
     if (!deleting) {
       charIdx++;
       el.textContent = text.slice(0, charIdx);
