@@ -553,3 +553,87 @@
     });
   });
 })();
+
+// ==============================
+// Projects — entrance animation (staggered fade + rise)
+// ==============================
+(function () {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  const cards = document.querySelectorAll('.project-card');
+  if (!cards.length) return;
+
+  gsap.set('.section-eyebrow, .section-heading', { y: 20, opacity: 0 });
+  gsap.set(cards, { y: 40, opacity: 0 });
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.projects',
+      start: 'top 70%',
+      toggleActions: 'play none none none'
+    }
+  });
+
+  tl.to('.section-eyebrow', { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' })
+    .to('.section-heading', { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, '-=0.4')
+    .to(cards, { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power3.out' }, '-=0.35');
+})();
+
+// ==============================
+// Projects — like button (persisted per browser via localStorage)
+// ==============================
+(function () {
+  const buttons = document.querySelectorAll('.project-btn-like');
+  if (!buttons.length) return;
+
+  const STORE_KEY = 'portfolio_project_likes';
+
+  function readStore() {
+    try {
+      return JSON.parse(localStorage.getItem(STORE_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function writeStore(data) {
+    try {
+      localStorage.setItem(STORE_KEY, JSON.stringify(data));
+    } catch (e) {
+      // Storage unavailable (private browsing, quota, etc.) — the button
+      // still works for the current page view, it just won't persist.
+    }
+  }
+
+  const store = readStore();
+
+  buttons.forEach((btn) => {
+    const id = btn.dataset.project;
+    const countEl = btn.querySelector('.like-count');
+    const entry = store[id] || { liked: false, count: 0 };
+
+    countEl.textContent = entry.count;
+    if (entry.liked) {
+      btn.classList.add('liked');
+      btn.setAttribute('aria-pressed', 'true');
+    }
+
+    btn.addEventListener('click', () => {
+      const current = store[id] || { liked: false, count: 0 };
+      current.liked = !current.liked;
+      current.count = Math.max(0, current.count + (current.liked ? 1 : -1));
+      store[id] = current;
+      writeStore(store);
+
+      countEl.textContent = current.count;
+      btn.classList.toggle('liked', current.liked);
+      btn.setAttribute('aria-pressed', String(current.liked));
+
+      btn.classList.remove('pulse');
+      // Re-trigger the pulse animation on every click
+      void btn.offsetWidth;
+      btn.classList.add('pulse');
+    });
+  });
+})();
