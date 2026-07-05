@@ -1,67 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nikita Saini — Portfolio</title>
 
-<!-- Fonts loaded from Google Fonts CDN. This is the actual fix for
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikita Saini — Portfolio</title>
+
+  <!-- Fonts loaded from Google Fonts CDN. This is the actual fix for
      "font style not changing": the CSS @font-face rules pointed at
      local files in a fonts/ folder that isn't actually there, so every
      custom font was silently falling back to the browser default. -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jim+Nightshade&family=Fontdiner+Swanky&family=Metal+Mania&family=Cinzel+Decorative:wght@400;700&family=Unbounded:wght@400;700;900&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bungee&family=Jim+Nightshade&family=Fontdiner+Swanky&family=Metal+Mania&family=Cinzel+Decorative:wght@400;700&family=Unbounded:wght@400;700;900&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
 
-<link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="noise-overlay"></div>
+  <div class="noise-overlay"></div>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
 
-<nav>
-  <div class="logo">&lt;cipher/&gt;</div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+  <nav>
+    <div class="logo">&lt;cipher/&gt;</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-<section class="hero">
-  <canvas id="particle-canvas"></canvas>
+  <section class="hero">
+    <canvas id="particle-canvas"></canvas>
 
-  <span class="corner-mark tl">✦</span>
-  <span class="corner-mark br">✦</span>
+    <span class="corner-mark tl">✦</span>
+    <span class="corner-mark br">✦</span>
 
-  <div class="hero-bold">
-    <p class="hero-greet">Hey — you've reached</p>
-    <p class="hero-lead">Portfolio of</p>
-    <h1 class="hero-mega"><span id="typewriter"></span><span class="type-cursor">|</span></h1>
-    <div class="hero-cta">
-      <a href="mailto:nikitasaini.dev@gmail.com" class="btn btn-primary">Connect</a>
-      <a href="resume_sde_nikitaSaini.pdf" target="_blank" rel="noopener" class="btn btn-ghost">View Resume</a>
+    <div class="hero-bold">
+      <p class="hero-greet">Hey — you've reached</p>
+      <p class="hero-lead">Portfolio of</p>
+      <h1 class="hero-mega"><span id="typewriter"></span><span class="type-cursor">|</span></h1>
+      <div class="hero-cta">
+        <a href="mailto:nikitasaini.dev@gmail.com" class="btn btn-primary">Connect</a>
+        <a href="resume_sde_nikitaSaini.pdf" target="_blank" rel="noopener" class="btn btn-ghost">View Resume</a>
+      </div>
     </div>
-  </div>
-  <!-- Photo HUD frame (.hero-photo-wrap / .photo-frame / .photo-ring etc.)
+    <!-- Photo HUD frame (.hero-photo-wrap / .photo-frame / .photo-ring etc.)
        still lives in style.css — reuse that same markup later inside your
        #about section instead of here. -->
 
-  <div class="scroll-hint"><span></span>Scroll</div>
-</section>
+    <div class="hero-fade-bottom"></div>
+    <div class="scroll-hint"><span></span>Scroll</div>
+  </section>
 
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="script.js" defer></script>
+  <section class="about" id="about">
+    <div class="about-fade-top"></div>
+
+    <div class="about-blobs">
+      <span class="blob blob-warm"></span>
+      <span class="blob blob-cool"></span>
+      <span class="blob blob-soft"></span>
+      <div class="about-particles" id="aboutParticles"></div>
+    </div>
+
+    <div class="about-pin-wrap" id="aboutPinWrap">
+      <div class="about-card" id="aboutCard">
+        <div class="about-col-left">
+          <h2 class="about-heading" id="aboutHeading">About Me</h2>
+          <p class="about-bio">
+            I'm a full-stack software engineer who builds fast, reliable, and scalable
+            web applications — from clean, well-architected backends to polished,
+            production-ready interfaces. I care deeply about writing maintainable code
+            and designing systems that hold up under real-world use.
+          </p>
+          <p class="about-bio about-bio-second">
+            I bring that same rigor to machine learning and AI, applying them to solve
+            genuinely useful problems. Continuous learning drives how I work, and I'm
+            looking to bring that discipline to a team building impactful digital
+            products.
+          </p>
+        </div>
+
+        <div class="about-col-right">
+          <div class="photo-float-wrapper" id="aboutPhotoWrap">
+            <div class="photo-orbital-system" id="aboutPhoto">
+              <div class="photo-orbit-track">
+                <div class="photo-orbit-dot"></div>
+              </div>
+              <div class="photo-ring-glow"></div>
+              <div class="photo-glass-shine"></div>
+              <div class="photo-frame-circle">
+                <img class="photo-img-circle" src="profile.jpeg" alt="Nikita Saini">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="script.js" defer></script>
 </body>
+
 </html>
